@@ -36,9 +36,9 @@ def column_menu(df, mainDF):
 
 def sort_menu(df, mainDF):
     input_val = int(input("What column do you want to sort by\n1) Total Points\n2) Name\n"))
-    if input_val == 1:
-        sorted_db = fpl.sort_db('total_points', df)
-        print(sorted_db)
+    values = ['total_points', 'name']
+    sorted_db = fpl.sort_db(values[int(input_val)-1], df)
+    print(sorted_db)
 
 def search_db_menu(df, odf, mainDF):
     print(df)
