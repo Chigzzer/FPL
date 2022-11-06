@@ -9,11 +9,13 @@ def main_menu(df, mainDF):
 
 def main_db_menu(df, mainDF):
     print(df)
-    input_val = int(input("What do you want to do: \n 1) Search Database \n 2) Add/Remove a column \n 3) Back to previous menu\n"))
+    input_val = int(input("What do you want to do: \n 1) Search Database \n 2) Add/Remove a column \n 3) Sort Database \n 4) Back to previous menu\n"))
     if input_val == 1:
         search_db_menu(df,df, mainDF)
     elif input_val  == 2:
         column_menu(df, mainDF)
+    elif input_val == 3:
+        sort_menu(df, mainDF)
     else:
         main_menu(df, mainDF)
         
@@ -31,6 +33,12 @@ def column_menu(df, mainDF):
     else:
         df = fpl.add_column(val, df, mainDF)
     main_db_menu(df, mainDF)
+
+def sort_menu(df, mainDF):
+    input_val = int(input("What column do you want to sort by\n1) Total Points\n2) Name\n"))
+    if input_val == 1:
+        sorted_db = fpl.sort_db('total_points', df)
+        print(sorted_db)
 
 def search_db_menu(df, odf, mainDF):
     print(df)

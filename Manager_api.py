@@ -3,6 +3,10 @@ import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 
+
+# Created for initial draft of the manager's layout
+
+
 # Obtaining the current gameweek input 
 current_gw = input("What gameweek? ")
 """

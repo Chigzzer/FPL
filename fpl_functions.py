@@ -56,3 +56,7 @@ def add_column(name, df, main_df):
 def remove_column(name, df):
     df = df.drop(name, axis = 1) 
     return df
+
+def sort_db(name, db):
+    db = db.sort_values(by=['name'], ascending=False)
+    return db
