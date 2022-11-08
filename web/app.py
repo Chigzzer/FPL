@@ -8,11 +8,13 @@ app = Flask(__name__)
 api = 'https://fantasy.premierleague.com/api/bootstrap-static/#/'
 
 # points_api = https://fantasy.premierleague.com/api/event/(gwnumber)/live/
+# points_api per player id: https://fantasy.premierleague.com/api/element-summary/'player_id'/
+
 
 data = rq.get(api)
 database = data.json()
 main_df = pd.DataFrame(database['elements'])
-slim_main_df = main_df[['web_name', 'element_type', 'team', 'now_cost', 'total_points']]
+slim_main_df = main_df[['id', 'web_name', 'element_type', 'team', 'now_cost', 'total_points']]
 slim_main_df.rename(columns={'element_type' : 'position', 'web_name' : 'name', 'now_cost' : 'price'}, inplace = True)
 for i in range(len(slim_main_df['position'])):
     slim_main_df['position'][i] = fpl.position(slim_main_df['position'][i])
