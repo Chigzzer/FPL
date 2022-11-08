@@ -7,7 +7,6 @@
     <title>Home</title>
 </head>
 <body>
-    <a href="dbase.html">link</a>
     {% for table in tables %}
         {{titles[loop.index]}}
         {{ table|safe }}
