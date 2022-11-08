@@ -1,3 +1,5 @@
+import requests as rq
+import pandas as pd
 
 def find_player_code(database, name):
     for i in database['elements']:
@@ -11,6 +13,7 @@ def find_player_name(database, code):
         if i['code'] == code:
             name= i['web_name']
     return name
+
 
 def position(number):
     if number == 1:
@@ -60,3 +63,15 @@ def remove_column(name, df):
 def sort_db(name, db):
     db = db.sort_values(by=['name'], ascending=False)
     return db
+
+def player_weekPoints(player_id):
+    points_api = 'https://fantasy.premierleague.com/api/element-summary/' + str(player_id) + '/'
+    points_api = 'https://fantasy.premierleague.com/api/element-summary/' + str(player_id) + '/'
+    points_data = rq.get(points_api)
+    points_db = points_data.json()
+    points_df = pd.DataFrame(points_db['history'])
+    points_df_points = points_df['total_points'] #gets player id
+    player_points=[]
+    for point in points_df_points:
+        player_points.append(point)
+    return player_points

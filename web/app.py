@@ -2,13 +2,17 @@ from flask import Flask, render_template, request
 import requests as rq
 import fpl_functions as fpl
 import pandas as pd
+import warnings
+
+#supress warnings
+warnings.filterwarnings("ignore")
 
 app = Flask(__name__)
 
 api = 'https://fantasy.premierleague.com/api/bootstrap-static/#/'
 
 # points_api = https://fantasy.premierleague.com/api/event/(gwnumber)/live/
-# points_api per player id: https://fantasy.premierleague.com/api/element-summary/'player_id'/
+# points_api per player id: https://fantasy.premierleague.com/api/element-summary/
 
 
 data = rq.get(api)
@@ -34,24 +38,11 @@ for week, ids in gws.iterrows():
         break
 
 
-#Trying to get the points each player has each gameweek
-points_api = 'https://fantasy.premierleague.com/api/event/1/live/'
-points_data = rq.get(points_api)
-points_db = points_data.json()
-points_df = pd.DataFrame(points_db['elements'])
-points_df_id = points_df['id'] #gets player id
-
-#Trying to get table of the players points
-points_df_points = points_df['stats']
-print(points_df_points)
-
-#points_df_points = points_df['stats']['total_points']
-#frames = [points_df_id, points_df_points]
-#table = pd.concat(frames)
-#display(table)
-
-
-
+#Code to get player's past gameweek points
+player_id = 10
+# player_id = fpl.find_player_code(database, player_name)
+points=fpl.player_weekPoints(player_id)
+print(test)
 
 
 @app.route("/")
