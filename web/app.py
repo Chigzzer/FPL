@@ -3,6 +3,8 @@ import requests as rq
 import fpl_functions as fpl
 import pandas as pd
 import warnings
+import matplotlib
+matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 
 #supress warnings
@@ -43,8 +45,10 @@ for week, ids in gws.iterrows():
 player_id = 10
 # player_id = fpl.find_player_code(database, player_name)
 gw_points, total_points = fpl.player_weekPoints(player_id)
-x_axis = range(1, len(total_points))
-plt.plot(x_axis, total_points)
+x_axis = [x for x in range(1, len(total_points) + 1)]
+print(len(x_axis))
+print(len(total_points))
+plt.bar(x_axis, gw_points)
 plt.ylabel("Total Points")
 plt.xlabel("Gameweek")
 plt.savefig('c:/Users/chira/Documents/Coding/FPL/web/static/plot.jpg')
@@ -54,6 +58,20 @@ plt.savefig('c:/Users/chira/Documents/Coding/FPL/web/static/plot.jpg')
 @app.route("/")
 def index():
     return render_template("index.html", tables = [slim_main_df.to_html(classes='data')], titles=slim_main_df.columns.values)
+
+@app.route('/', methods=['POST'])
+def my_form_post():
+    player_id = request.form['textbox']
+    gw_points, total_points = fpl.player_weekPoints(player_id)
+    x_axis = range(1, len(total_points))
+    #plt.close()
+    x_axis = [x for x in range(1, len(total_points) + 1)]
+    plt.bar(x_axis, total_points)
+    plt.ylabel("Total Points")
+    plt.xlabel("Gameweek")
+    plt.savefig('c:/Users/chira/Documents/Coding/FPL/web/static/plot.jpg')
+    print(player_id)
+    return render_template("index.html")
 
 @app.route("/dbase.html")
 def dbase():

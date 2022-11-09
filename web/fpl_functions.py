@@ -66,7 +66,7 @@ def sort_db(name, db):
 
 # Obtain points
 def player_weekPoints(player_id):
-    points_api = 'https://fantasy.premierleague.com/api/element-summary/' + str(player_id) + '/'
+   
     points_api = 'https://fantasy.premierleague.com/api/element-summary/' + str(player_id) + '/'
     points_data = rq.get(points_api)
     points_db = points_data.json()
