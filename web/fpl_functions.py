@@ -64,6 +64,7 @@ def sort_db(name, db):
     db = db.sort_values(by=['name'], ascending=False)
     return db
 
+# Obtain points
 def player_weekPoints(player_id):
     points_api = 'https://fantasy.premierleague.com/api/element-summary/' + str(player_id) + '/'
     points_api = 'https://fantasy.premierleague.com/api/element-summary/' + str(player_id) + '/'
@@ -71,7 +72,14 @@ def player_weekPoints(player_id):
     points_db = points_data.json()
     points_df = pd.DataFrame(points_db['history'])
     points_df_points = points_df['total_points'] #gets player id
-    player_points=[]
+    player_gw_points=[]
+    player_total_points = []
     for point in points_df_points:
-        player_points.append(point)
-    return player_points
+        player_gw_points.append(point)
+    for i in range(len(player_gw_points)):
+        if i == 0:
+            player_total_points.append(player_gw_points[i])
+        else:
+            player_total_points.append(player_gw_points[i] + player_total_points[i-1])
+
+    return player_gw_points, player_total_points

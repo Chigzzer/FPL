@@ -3,6 +3,7 @@ import requests as rq
 import fpl_functions as fpl
 import pandas as pd
 import warnings
+import matplotlib.pyplot as plt
 
 #supress warnings
 warnings.filterwarnings("ignore")
@@ -41,8 +42,13 @@ for week, ids in gws.iterrows():
 #Code to get player's past gameweek points
 player_id = 10
 # player_id = fpl.find_player_code(database, player_name)
-points=fpl.player_weekPoints(player_id)
-print(test)
+gw_points, total_points = fpl.player_weekPoints(player_id)
+x_axis = range(1, len(total_points))
+plt.plot(x_axis, total_points)
+plt.ylabel("Total Points")
+plt.xlabel("Gameweek")
+plt.savefig('c:/Users/chira/Documents/Coding/FPL/web/static/plot.jpg')
+
 
 
 @app.route("/")
@@ -51,7 +57,7 @@ def index():
 
 @app.route("/dbase.html")
 def dbase():
-    return render_template("index.html", tables = [slim_main_df.to_html(classes='data')], titles=slim_main_df.columns.values)
+    return render_template("dbase.html", tables = [slim_main_df.to_html(classes='data')], titles=slim_main_df.columns.values)
 
 
 if __name__ == '__main__':
