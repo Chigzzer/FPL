@@ -61,16 +61,21 @@ def index():
 
 @app.route('/', methods=['POST'])
 def my_form_post():
-    player_id = request.form['textbox']
+    player_name = request.form['textbox']
+    print(player_name.upper())
+    player_id = fpl.find_player_id(database, player_name)
+    print(player_id)
+
     gw_points, total_points = fpl.player_weekPoints(player_id)
     x_axis = range(1, len(total_points))
-    #plt.close()
+    plt.close()
     x_axis = [x for x in range(1, len(total_points) + 1)]
-    plt.bar(x_axis, total_points)
+    plt.bar(x_axis, gw_points)
     plt.ylabel("Total Points")
     plt.xlabel("Gameweek")
     plt.savefig('c:/Users/chira/Documents/Coding/FPL/web/static/plot.jpg')
     print(player_id)
+    
     return render_template("index.html")
 
 @app.route("/dbase.html")
