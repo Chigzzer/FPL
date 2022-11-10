@@ -9,3 +9,4 @@
 * Create a method to select player to view their points each gameweek(Done)
 * Need to design site layout
 * Change size of select box depending on size of screen
+* Possibly add ability to filter the select box depending on team
