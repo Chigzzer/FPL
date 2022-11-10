@@ -71,11 +71,8 @@ def index():
 def my_form_post():
     #Obtain user's inputted player
     player_name = request.form['players']
-    print("HERE:")
-    print(player_name)
     player_id = fpl.find_player_id(database, player_name)
-    print("ID:")
-    print(player_id)
+
 
     gw_points, total_points = fpl.player_weekPoints(player_id)
     x_axis = range(1, len(total_points))
@@ -84,6 +81,8 @@ def my_form_post():
     plt.bar(x_axis, gw_points)
     plt.ylabel("Total Points")
     plt.xlabel("Gameweek")
+    if request.form.get("addOn") != None:
+        plt.plot(x_axis, total_points)
     plt.savefig('c:/Users/chira/Documents/Coding/FPL/web/static/plot.jpg')
     print(player_id)
     
