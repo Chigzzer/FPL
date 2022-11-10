@@ -70,9 +70,11 @@ def index():
 @app.route('/', methods=['POST'])
 def my_form_post():
     #Obtain user's inputted player
-    player_name = request.form['textbox']
-    print(player_name.upper())
+    player_name = request.form['players']
+    print("HERE:")
+    print(player_name)
     player_id = fpl.find_player_id(database, player_name)
+    print("ID:")
     print(player_id)
 
     gw_points, total_points = fpl.player_weekPoints(player_id)
