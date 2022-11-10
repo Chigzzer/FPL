@@ -46,6 +46,8 @@ for week, ids in gws.iterrows():
         current_gw = ids['id']
         break
 
+player_list = fpl.get_player_list(database)
+print(player_list)
 
 # Initial figure on page (empty)
 player_id = 10
@@ -63,7 +65,7 @@ plt.savefig('c:/Users/chira/Documents/Coding/FPL/web/static/plot.jpg')
 
 @app.route("/")
 def index():
-    return render_template("index.html", tables = [slim_main_df.to_html(classes='data')], titles=slim_main_df.columns.values)
+    return render_template("index.html", player_list = player_list)
 
 @app.route('/', methods=['POST'])
 def my_form_post():
@@ -83,7 +85,7 @@ def my_form_post():
     plt.savefig('c:/Users/chira/Documents/Coding/FPL/web/static/plot.jpg')
     print(player_id)
     
-    return render_template("index.html")
+    return render_template("index.html", player_list = player_list)
 
 @app.route("/dbase.html")
 def dbase():

@@ -90,3 +90,10 @@ def player_weekPoints(player_id):
             player_total_points.append(player_gw_points[i] + player_total_points[i-1])
 
     return player_gw_points, player_total_points
+
+
+def get_player_list(db):
+    player_list = []
+    for player in db['elements']:
+        player_list.append(player['web_name'])
+    return player_list
