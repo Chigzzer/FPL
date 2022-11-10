@@ -14,7 +14,7 @@
             <form method="POST" class="form1"> 
                 <select name="players" size="30" id="player_list">
                     {% for player in player_list %}
-                    <option value="{{ player }}" selected>{{ player }}</option>
+                    <option class="options" value="{{ player[0] }}" selected>{{ player[0] }} | {{ player[1] }}</option>
                     {% endfor %}
                 </select>
                 <div class="check">
