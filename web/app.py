@@ -10,19 +10,25 @@ import matplotlib.pyplot as plt
 #supress warnings
 warnings.filterwarnings("ignore")
 
+#Creating the app
 app = Flask(__name__)
-
+# api to the FPL data's
 api = 'https://fantasy.premierleague.com/api/bootstrap-static/#/'
 
-# points_api = https://fantasy.premierleague.com/api/event/(gwnumber)/live/
+# live game week api = https://fantasy.premierleague.com/api/event/(gwnumber)/live/
 # points_api per player id: https://fantasy.premierleague.com/api/element-summary/
 
 
+# Converting the api to a database/dataframe fro mdata from the API 
 data = rq.get(api)
 database = data.json()
 main_df = pd.DataFrame(database['elements'])
+
+# Sliiming down the dataframe to the only values I require
 slim_main_df = main_df[['id', 'web_name', 'element_type', 'team', 'now_cost', 'total_points']]
 slim_main_df.rename(columns={'element_type' : 'position', 'web_name' : 'name', 'now_cost' : 'price'}, inplace = True)
+
+# Altering certain columns to more readable names
 for i in range(len(slim_main_df['position'])):
     slim_main_df['position'][i] = fpl.position(slim_main_df['position'][i])
 
@@ -41,14 +47,14 @@ for week, ids in gws.iterrows():
         break
 
 
-#Code to get player's past gameweek points
+# Initial figure on page (empty)
 player_id = 10
-# player_id = fpl.find_player_code(database, player_name)
 gw_points, total_points = fpl.player_weekPoints(player_id)
 x_axis = [x for x in range(1, len(total_points) + 1)]
+total_points = [0] * len(gw_points)
 print(len(x_axis))
 print(len(total_points))
-plt.bar(x_axis, gw_points)
+plt.bar(x_axis, total_points)
 plt.ylabel("Total Points")
 plt.xlabel("Gameweek")
 plt.savefig('c:/Users/chira/Documents/Coding/FPL/web/static/plot.jpg')
@@ -61,6 +67,7 @@ def index():
 
 @app.route('/', methods=['POST'])
 def my_form_post():
+    #Obtain user's inputted player
     player_name = request.form['textbox']
     print(player_name.upper())
     player_id = fpl.find_player_id(database, player_name)
