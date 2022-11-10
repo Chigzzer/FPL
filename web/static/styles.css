@@ -1,0 +1,41 @@
+.body{
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: space-between;
+    align-items: center;
+    padding: 50px;;
+}
+
+.form{
+    display: flex;
+    flex-direction: column;
+    border: 2px green solid;
+    align-items: stretch;
+}
+
+.plot{
+    border: 1px red solid;
+}
+
+#player_list{
+    width: 500px;
+    border: 1px red solid;
+}
+
+.form1{
+    display: flex;
+    flex-direction: column;
+    font-size: 18px;
+}
+
+.submit{
+    padding: 20px;
+    width: 200px;
+}
+
+.check{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;;
+}

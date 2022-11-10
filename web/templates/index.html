@@ -5,19 +5,22 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Home</title>
+    <link href="../static/styles.css" rel="stylesheet">  
 </head>
 <body>
     <a href="dbase.html">link</a>
     <div class="body">
         <div class="form">
-            <form method="POST"> 
-                Add Total Points Line Graph? <input type="checkbox" name="addOn">
-                <select name="players" size="50">
+            <form method="POST" class="form1"> 
+                <select name="players" size="30" id="player_list">
                     {% for player in player_list %}
                     <option value="{{ player }}" selected>{{ player }}</option>
                     {% endfor %}
                 </select>
-                <button type="submit" name="submit">Submit</button>
+                <div class="check">
+                    <div>Add Total Points Line Graph? <input type="checkbox" name="addOn"></div>
+                    <button class="submit" type="submit" name="submit">Submit</button>
+                </div>
             </form>
         </div>
         <div class="plot">
