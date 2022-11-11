@@ -93,6 +93,7 @@ def player_weekPoints(player_id):
 
 def get_player_list(db):
     player_list = []
+    teams = []
     for player in db['elements']:
         team = find_team(player['team'], db)
         pl = [player['web_name'], team]
