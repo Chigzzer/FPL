@@ -62,7 +62,6 @@ plt.xlabel("Gameweek")
 plt.savefig('c:/Users/chira/Documents/Coding/FPL/web/static/plot.jpg')
 
 
-
 @app.route("/")
 def index():
     return render_template("index.html", player_list = player_list, teams = teams)
