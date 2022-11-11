@@ -8,16 +8,26 @@
     <link href="../static/styles.css" rel="stylesheet">  
 </head>
 <body>
+
     <div class="header">
         <div class="title"><p>Points Tracker</p></div>
-        <div class="links"><a href="dbase.html">Database</a></div>
+        <div class="links">
+            <a href="/">Home</a>
+            <a href="dbase.html">Database</a>
+            <a href="team.html">Team</a>
+        </div>
     </div>
     <div class="body">
+        <div class="plot">
+            <div>
+            <img src="../static/plot.jpg">
+            </div>
+        </div>
         <div class="form">
             <form method="POST" class="form1"> 
-                <select name="players" size="10" id="player_list">
+                <select name="players" size="5" id="player_list">
                     {% for team in teams %}
-                        <option class="options" disabled> {{ team }} </option>
+                        <option class="team_name" disabled> {{ team }} </option>
                         {% for player in player_list %}
                             {% if player[1] == team %}
                                 <option class="options" value="{{ player[0] }}">{{ player[0] }} | {{ player[1] }}</option>
@@ -30,9 +40,6 @@
                     <div><button class="submit" type="submit" name="submit">Submit</button></div>
                 </div>
             </form>
-        </div>
-        <div class="plot">
-            <img src="../static/plot.jpg">
         </div>
     </div>
     <div class="footer">

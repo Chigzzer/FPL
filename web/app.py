@@ -47,23 +47,22 @@ for week, ids in gws.iterrows():
         break
 
 player_list, teams = fpl.get_player_list(database)
-print(player_list)
-
 # Initial figure on page (empty)
-player_id = 10
-gw_points, total_points = fpl.player_weekPoints(player_id)
-x_axis = [x for x in range(1, len(total_points) + 1)]
-total_points = [0] * len(gw_points)
-print(len(x_axis))
-print(len(total_points))
-plt.bar(x_axis, total_points)
-plt.ylabel("Total Points")
-plt.xlabel("Gameweek")
-plt.savefig('c:/Users/chira/Documents/Coding/FPL/web/static/plot.jpg')
+
 
 
 @app.route("/")
 def index():
+    plt.close()
+    player_id = 10
+    gw_points, total_points = fpl.player_weekPoints(player_id)
+    x_axis = [x for x in range(1, len(total_points) + 1)]
+    total_points = [0] * len(gw_points)
+    plt.bar(x_axis, total_points)
+    plt.ylabel("Total Points")
+    plt.xlabel("Gameweek")
+    print(total_points)
+    plt.savefig('c:/Users/chira/Documents/Coding/FPL/web/static/plot.jpg')
     return render_template("index.html", player_list = player_list, teams = teams)
 
 @app.route('/', methods=['POST'])
@@ -71,8 +70,6 @@ def my_form_post():
     #Obtain user's inputted player
     player_name = request.form['players']
     player_id = fpl.find_player_id(database, player_name)
-
-
     gw_points, total_points = fpl.player_weekPoints(player_id)
     x_axis = range(1, len(total_points))
     plt.close()
@@ -91,6 +88,8 @@ def my_form_post():
 def dbase():
     return render_template("dbase.html", tables = [slim_main_df.to_html(classes='data')], titles=slim_main_df.columns.values)
 
-
+@app.route("/team.html")
+def team():
+    return render_template("team.html")
 if __name__ == '__main__':
     app.run(host='0.0.0.0')
