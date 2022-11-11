@@ -16,8 +16,7 @@
     <div class="body">
         <div class="form">
             <form method="POST" class="form1"> 
-                <select name="players" size="30" id="player_list">
-
+                <select name="players" size="10" id="player_list">
                     {% for team in teams %}
                         <option class="options" disabled> {{ team }} </option>
                         {% for player in player_list %}
@@ -29,7 +28,7 @@
                 </select>
                 <div class="check">
                     <div>Add Total Points Line Graph? <input type="checkbox" name="addOn"></div>
-                    <button class="submit" type="submit" name="submit">Submit</button>
+                    <div><button class="submit" type="submit" name="submit">Submit</button></div>
                 </div>
             </form>
         </div>

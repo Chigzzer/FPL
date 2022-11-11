@@ -51,7 +51,7 @@
 }
 
 #player_list{
-    width: 500px;
+    width: 300px;
     border: 1px red solid;
 }
 
@@ -59,18 +59,23 @@
     display: flex;
     flex-direction: column;
     font-size: 18px;
+    gap: 12px;
 }
 
 .submit{
-    padding: 20px;
-    width: 200px;
+    padding: 10px;
+    width: 300px;
+    font-weight: 900;
+    font-size: 24px;
 }
 
 .check{
     display: flex;
     justify-content: space-between;
-    align-items: center;
-    padding: 10px;;
+    align-items: flex-start;
+    flex-direction: column;
+    border: 1px yellow solid ;
+    gap: 12px;
 }
 
 .options{
