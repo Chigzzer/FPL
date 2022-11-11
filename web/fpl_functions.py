@@ -96,6 +96,8 @@ def get_player_list(db):
     teams = []
     for player in db['elements']:
         team = find_team(player['team'], db)
+        if team not in teams:
+            teams.append(team)
         pl = [player['web_name'], team]
         player_list.append(pl)
-    return player_list
+    return player_list, teams
