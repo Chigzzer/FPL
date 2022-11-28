@@ -16,6 +16,7 @@ def find_player_id(database, name):
 
 def find_player_name(database, code):
     for i in database['elements']:
+        print(code)
         if i['code'] == code:
             name= i['web_name']
     return name
