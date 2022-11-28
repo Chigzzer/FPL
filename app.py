@@ -50,7 +50,6 @@ player_list, teams = fpl.get_player_list(database)
 # Initial figure on page (empty)
 
 
-
 @app.route("/")
 def index():
     plt.close()
@@ -88,8 +87,20 @@ def my_form_post():
 def dbase():
     return render_template("dbase.html", tables = [slim_main_df.to_html(classes='data')], titles=slim_main_df.columns.values)
 
-@app.route("/team.html")
-def team():
-    return render_template("team.html")
+
+
+@app.route("/team", methods=['GET', 'POST'])
+def teamG():
+    if request.method == 'POST':
+        teamID = request.form.get('teamID')
+        teamPlayers = fpl.getTeamPlayers(teamID, current_gw, database)
+        print(teamPlayers)
+        
+
+        return render_template("teamgraph.html", player_list = teamPlayers)
+    else:
+        return render_template("team.html")
+
+
 if __name__ == '__main__':
     app.run(host='0.0.0.0')

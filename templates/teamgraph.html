@@ -1,0 +1,32 @@
+{% extends "template.html" %}
+
+
+{% block title %}
+    <title>Team</title>
+    <script src="../static/javascript.js"></script>
+{% endblock %}
+
+{% block body %}
+</div>
+<div class="body">
+    <div class="plot">
+        <div>
+        <img src="/static/plot.jpg">
+        </div>
+    </div>
+    <div class="form">
+        <form method="POST" class="form1"> 
+            <select name="players" size="5" id="player_list">
+                    {% for player in player_list %}
+                        <option class="options" value="{{ player}}">{{ player }}</option>
+                    {% endfor %}
+            </select>
+            <div class="check">
+                <div>Add Total Points Line Graph?<input type="checkbox" name="addOn"></div>
+                <div><button class="submit" type="submit" name="submit">Submit</button></div>
+            </div>
+        </form>
+        <div><a href="/teamgraph"><button class="reset" name="reset" value="reset">Reset</button></a></div>
+    </div>
+</div>
+{% endblock %}

@@ -102,3 +102,20 @@ def get_player_list(db):
         pl = [player['web_name'], team]
         player_list.append(pl)
     return player_list, teams
+
+def getTeamPlayers(teamID, gw, db):
+    teamUrl = 'https://fantasy.premierleague.com/api/entry/' + teamID + '/event/' + \
+        str(gw - 1) + '/picks/'
+    teamData = rq.get(teamUrl)
+    teamDatabase = teamData.json()
+    teamMainDf = pd.DataFrame(teamDatabase['picks'])
+
+    playerList = []
+    for player in teamDatabase['picks']:
+        playerID = player['element']
+        for i in db['elements']:
+            if i['id'] == playerID:
+                playerList.append(i['web_name'])
+    return playerList
+
+    
