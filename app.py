@@ -61,7 +61,6 @@ def index():
     plt.ylabel("Total Points")
     plt.xlabel("Gameweek")
     print(total_points)
-    plt.legend()
     plt.savefig('c:/Users/chira/Documents/Coding/FPL/static/plot.jpg')
     return render_template("index.html", player_list = player_list, teams = teams)
 
@@ -90,16 +89,44 @@ def dbase():
 
 
 @app.route("/team", methods=['GET', 'POST'])
-def teamG():
-    if request.method == 'POST':
-        teamID = request.form.get('teamID')
-        teamPlayers = fpl.getTeamPlayers(teamID, current_gw, database)
-        print(teamPlayers)
-        
+def team():
+    return render_template("team.html")
 
-        return render_template("teamgraph.html", player_list = teamPlayers)
-    else:
-        return render_template("team.html")
+
+
+@app.route("/teamSelect", methods=['POST'])
+def teamSelect():
+    teamID = request.form.get('teamID')
+    teamPlayers = fpl.getTeamPlayers(teamID, current_gw, database)  
+    plt.close()
+    player_id = 10
+    gw_points, total_points = fpl.player_weekPoints(player_id)
+    x_axis = [x for x in range(1, len(total_points) + 1)]
+    total_points = [0] * len(gw_points)
+    plt.bar(x_axis, total_points)
+    plt.ylabel("Total Points")
+    plt.xlabel("Gameweek")
+    plt.savefig('c:/Users/chira/Documents/Coding/FPL/static/plot.jpg')
+    return render_template("teamgraph.html", player_list = teamPlayers, teamID = teamID)
+
+@app.route("/teamSelected", methods=['POST'])
+def teamGraph():
+    teamID = request.form.get('teamID')
+    teamPlayers = fpl.getTeamPlayers(teamID, current_gw, database)  
+    player_name = request.form['players']
+    player_id = fpl.find_player_id(database, player_name)
+    gw_points, total_points = fpl.player_weekPoints(player_id)
+    x_axis = range(1, len(total_points))
+    x_axis = [x for x in range(1, len(total_points) + 1)]
+    plt.bar(x_axis, gw_points, width=0.2, label=player_name)
+    plt.ylabel("Total Points")
+    plt.xlabel("Gameweek")
+    plt.legend()
+    if request.form.get("addOn") != None:
+        plt.plot(x_axis, total_points)
+        plt.legend()
+    plt.savefig('c:/Users/chira/Documents/Coding/FPL/static/plot.jpg')    
+    return render_template("teamgraph.html", player_list = teamPlayers, teamID = teamID)
 
 
 if __name__ == '__main__':

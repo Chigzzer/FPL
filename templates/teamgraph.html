@@ -15,18 +15,22 @@
         </div>
     </div>
     <div class="form">
-        <form method="POST" class="form1"> 
+        <form action="/teamSelected" method="POST" class="form2"> 
             <select name="players" size="5" id="player_list">
                     {% for player in player_list %}
-                        <option class="options" value="{{ player}}">{{ player }}</option>
+                        <option class="options" value="{{player}}">{{ player }}</option>
                     {% endfor %}
             </select>
+            <input type="hidden" name="teamID" id="teamID" value="{{teamID}}">
             <div class="check">
                 <div>Add Total Points Line Graph?<input type="checkbox" name="addOn"></div>
                 <div><button class="submit" type="submit" name="submit">Submit</button></div>
             </div>
         </form>
-        <div><a href="/teamgraph"><button class="reset" name="reset" value="reset">Reset</button></a></div>
+        <form action="/teamSelect" method="POST" class="form3">
+            <input type="hidden" name="teamID" id="teamID" value="{{teamID}}">
+            <button class="submit" name="reset" value="reset">Reset</button>
+        </form>
     </div>
 </div>
 {% endblock %}
