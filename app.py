@@ -63,7 +63,7 @@ def index():
     plt.xlabel("Gameweek")
     print(total_points)
     plt.legend()
-    plt.savefig('c:/Users/chira/Documents/Coding/FPL/web/static/plot.jpg')
+    plt.savefig('c:/Users/chira/Documents/Coding/FPL/static/plot.jpg')
     return render_template("index.html", player_list = player_list, teams = teams)
 
 @app.route('/', methods=['POST'])
@@ -80,7 +80,7 @@ def my_form_post():
     plt.legend()
     if request.form.get("addOn") != None:
         plt.plot(x_axis, total_points)
-    plt.savefig('c:/Users/chira/Documents/Coding/FPL/web/static/plot.jpg')    
+    plt.savefig('c:/Users/chira/Documents/Coding/FPL/static/plot.jpg')    
     return render_template("index.html", player_list = player_list, teams = teams)
 
 @app.route("/dbase.html")
