@@ -7,11 +7,12 @@
 {% endblock %}
 
 {% block body %}
+<div class="mainBody">
     <div class="teamForm">
     <form action="/teamSelect" method="POST" class="teamForm">
-        <label for="teamID">What is your Team ID  <span class="circle"><a class ='questionMark' onclick="showInstructions();" style="cursor: pointer; cursor: hand;">?</a></span></label><br>
-        <input id='teamID' name="teamID" type="text">
-        <button class="submit" type="submit" name="submit">Submit</button>
+        <div class= 'label'><label for="teamID">What is your Team ID </label><br>
+        <input id='teamID' name="teamID" type="text"></div>
+        <div><button class="teamSubmit" type="submit" name="submit">Submit</button></div>
     </form>
     </div>
     <div class="idGuide">
@@ -19,13 +20,14 @@
             <a onclick="showInstructions();" style="cursor: pointer; cursor: hand;"> How to get your team ID</a>
         </div>
         <div class="instructions" id="instructions">
-            <h1>Step 1: Login to your account on the fantast website</h1>
-            <img class="steps" src="../static/instructions/step1.jpg" alt="Initial view of the page once you have logged in.">
-            <br><h1>Step 2: Go to Points page</h1>
-            <img class="steps" src="../static/instructions/step2.png" alt="Points page highlighted.">
-            <br><h1>Step 3: Get your team id from the adress bar</h1>
-            <img class="steps" src="../static/instructions/step3.png" alt="ID locaiton highlighted.">
+            <div class='step'><br><h1>Step 1: Login to your account on the fantasty website</h1>
+            <img class="steps" src="../static/instructions/step1.jpg" alt="Initial view of the page once you have logged in."></div>
+            <div class='step'><br><h1>Step 2: Go to Points page</h1>
+            <img class="steps" src="../static/instructions/step2.png" alt="Points page highlighted."></div>
+            <div class='step'><br><h1>Step 3: Get your team id from the adress bar</h1>
+            <img class="steps" src="../static/instructions/step3.png" alt="ID locaiton highlighted."></div>
 
         </div>
     </div>
+</div>
 {% endblock %}

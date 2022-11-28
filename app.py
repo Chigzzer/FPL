@@ -12,6 +12,7 @@ warnings.filterwarnings("ignore")
 
 #Creating the app
 app = Flask(__name__)
+app.config['DEBUG'] = True
 # api to the FPL data's
 api = 'https://fantasy.premierleague.com/api/bootstrap-static/#/'
 
@@ -111,6 +112,8 @@ def teamSelect():
 
 @app.route("/teamSelected", methods=['POST'])
 def teamGraph():
+    
+
     teamID = request.form.get('teamID')
     teamPlayers = fpl.getTeamPlayers(teamID, current_gw, database)  
     player_name = request.form['players']
