@@ -68,6 +68,8 @@ def index():
 @app.route('/', methods=['POST'])
 def my_form_post():
     #Obtain user's inputted player
+    if not request.form.get['players']:
+        return redirect('/')
     player_name = request.form['players']
     player_id = fpl.find_player_id(database, player_name)
     gw_points, total_points = fpl.player_weekPoints(player_id)
@@ -97,8 +99,26 @@ def team():
 
 @app.route("/teamSelect", methods=['POST'])
 def teamSelect():
+    # Checks if an ID has been submitted
+    if not request.form.get("teamID"):
+        return redirect("/team")
+    # Checks to see if ID is a number as required
+    try:
+        int(float(request.form.get("teamID")))
+    except ValueError:
+        return redirect("/team")
+    
+    # Obtains the team id from form and then obtains the player's in that selected team
     teamID = request.form.get('teamID')
-    teamPlayers = fpl.getTeamPlayers(teamID, current_gw, database)  
+    teamUrl = 'https://fantasy.premierleague.com/api/entry/' + teamID + '/event/' + \
+        str(current_gw - 1) + '/picks/'
+    teamData = rq.get(teamUrl)
+    teamDatabase = teamData.json()
+
+    # Checks to confirm if the team id provides a valid response
+    if 'detail' in teamDatabase:
+        return redirect("/team")
+    teamPlayers = fpl.getTeamPlayers(teamDatabase, database)  
     plt.close()
     player_id = 10
     gw_points, total_points = fpl.player_weekPoints(player_id)
@@ -112,12 +132,16 @@ def teamSelect():
 
 @app.route("/teamSelected", methods=['POST'])
 def teamGraph():
-    
-
+    # Getting the team's players
     teamID = request.form.get('teamID')
-    teamPlayers = fpl.getTeamPlayers(teamID, current_gw, database)  
+    teamUrl = 'https://fantasy.premierleague.com/api/entry/' + teamID + '/event/' + \
+                 str(current_gw - 1) + '/picks/'
+    teamData = rq.get(teamUrl)
+    teamDatabase = teamData.json()
+    teamPlayers = fpl.getTeamPlayers(teamDatabase, database)  
     player_name = request.form['players']
     player_id = fpl.find_player_id(database, player_name)
+    # Populate the graph with the player's points
     gw_points, total_points = fpl.player_weekPoints(player_id)
     x_axis = range(1, len(total_points))
     x_axis = [x for x in range(1, len(total_points) + 1)]

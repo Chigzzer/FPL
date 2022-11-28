@@ -16,10 +16,11 @@
     </div>
     <div class="form">
         <form action="/teamSelected" method="POST" class="form2"> 
-            <select name="players" size="5" id="player_list">
-                    {% for player in player_list %}
-                        <option class="options" value="{{player}}">{{ player }}</option>
-                    {% endfor %}
+            <select name="players" size="5" id="player_list" style="width: 450px;">
+                <option class="options" disabled selected>Your Players:</option>
+                {% for player in player_list %}
+                    <option class="options" value="{{player}}">{{ player }}</option>
+                {% endfor %}
             </select>
             <input type="hidden" name="teamID" id="teamID" value="{{teamID}}">
             <div class="check">
