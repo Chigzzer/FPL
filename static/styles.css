@@ -130,3 +130,7 @@ body{
 .addOn{
     transform: scale(5);
 }
+
+.instructions{
+    display: none;
+}

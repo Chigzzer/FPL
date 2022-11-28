@@ -3,6 +3,7 @@
 
 {% block title %}
     <title>Team</title>
+    <script src="../static/javascript.js"></script>
 {% endblock %}
 
 {% block body %}
@@ -13,6 +14,11 @@
     </form>
     </div>
     <div class="idGuide">
-
+        <div class="guideQ">
+            <a onclick="showInstructions();" style="cursor: pointer; cursor: hand;"> Click me to show how to find your team ID</a>
+        </div>
+        <div class="instructions" id="instructions">
+            <p> Test to see if I can hide</p>
+        </div>
     </div>
 {% endblock %}
