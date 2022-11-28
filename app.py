@@ -80,6 +80,7 @@ def my_form_post():
     plt.legend()
     if request.form.get("addOn") != None:
         plt.plot(x_axis, total_points)
+        plt.legend()
     plt.savefig('c:/Users/chira/Documents/Coding/FPL/static/plot.jpg')    
     return render_template("index.html", player_list = player_list, teams = teams)
 

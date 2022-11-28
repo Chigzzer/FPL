@@ -1,21 +1,10 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Home</title>
-    <link href="/static/styles.css" rel="stylesheet">  
-</head>
-<body>
+{% extends "template.html" %}
 
-    <div class="header">
-        <div class="title"><p>Points Tracker</p></div>
-        <div class="links">
-            <a href="/">Home</a>
-            <a href="dbase.html">Database</a>
-            <a href="team.html">Team</a>
-        </div>
+{% block title %}
+<title>Home</title>
+{% endblock %}
+
+{% block body %}
     </div>
     <div class="body">
         <div class="plot">
@@ -43,8 +32,4 @@
             <div><a href="/"><button class="reset" name="reset" value="reset">Reset</button></a></div>
         </div>
     </div>
-    <div class="footer">
-        <div class="copy">Copyright &copy Chigzzer</div>
-    </div>
-</body>
-</html>
+{% endblock %}

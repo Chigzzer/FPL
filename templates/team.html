@@ -1,1 +1,18 @@
 {% extends "template.html" %}
+
+
+{% block title %}
+    <title>Team</title>
+{% endblock %}
+
+{% block body %}
+    <div class="teamForm">
+    <form method="POST" class="teamForm">
+        <label for="teamID">What is your Team ID</label>
+        <input id='teamID' name="teamID" type="text">
+    </form>
+    </div>
+    <div class="idGuide">
+
+    </div>
+{% endblock %}
