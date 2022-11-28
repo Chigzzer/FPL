@@ -178,6 +178,14 @@ body{
     text-align: center;
 }
 
+.guideQ .teamID:hover{
+    color: blue;  
+}
+
+.guideQ .teamID{
+    font-style: italic;  
+}
+
 .instructions{
     display: none;
     gap: 12px;
