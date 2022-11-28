@@ -9,16 +9,22 @@
 {% block body %}
     <div class="teamForm">
     <form method="POST" class="teamForm">
-        <label for="teamID">What is your Team ID</label>
+        <label for="teamID">What is your Team ID  <span class="circle"><a class ='questionMark' onclick="showInstructions();" style="cursor: pointer; cursor: hand;">?</a></span></label><br>
         <input id='teamID' name="teamID" type="text">
     </form>
     </div>
     <div class="idGuide">
         <div class="guideQ">
-            <a onclick="showInstructions();" style="cursor: pointer; cursor: hand;"> Click me to show how to find your team ID</a>
+            <a onclick="showInstructions();" style="cursor: pointer; cursor: hand;"> How to get your team ID</a>
         </div>
         <div class="instructions" id="instructions">
-            <p> Test to see if I can hide</p>
+            <h1>Step 1: Login to your account on the fantast website</h1>
+            <img class="steps" src="../static/instructions/step1.jpg" alt="Initial view of the page once you have logged in.">
+            <br><h1>Step 2: Go to Points page</h1>
+            <img class="steps" src="../static/instructions/step2.png" alt="Points page highlighted.">
+            <br><h1>Step 3: Get your team id from the adress bar</h1>
+            <img class="steps" src="../static/instructions/step3.png" alt="ID locaiton highlighted.">
+
         </div>
     </div>
 {% endblock %}
