@@ -17,6 +17,7 @@ body{
     height: 100px;
     display: flex;
     justify-content: space-between;
+    flex-shrink: 0;
 }
 
 .title{
@@ -47,7 +48,7 @@ body{
     justify-content: space-between;
     align-items: center;
     padding: 0px;
-    flex: 1 1 auto;
+    flex: 0 1 auto;
     height: 100%;
     flex-wrap: wrap-reverse;
 }
