@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect
+from flask import Flask, render_template, request, redirect, flash
 import requests as rq
 import fpl_functions as fpl
 import pandas as pd
@@ -16,80 +16,71 @@ app.config['DEBUG'] = True
 # api to the FPL data's
 api = 'https://fantasy.premierleague.com/api/bootstrap-static/#/'
 
-# live game week api = https://fantasy.premierleague.com/api/event/(gwnumber)/live/
-# points_api per player id: https://fantasy.premierleague.com/api/element-summary/
 
 
 # Converting the api to a database/dataframe fro mdata from the API 
 data = rq.get(api)
 database = data.json()
-main_df = pd.DataFrame(database['elements'])
+mainDF = pd.DataFrame(database['elements'])
 
 # Sliiming down the dataframe to the only values I require
-slim_main_df = main_df[['id', 'web_name', 'element_type', 'team', 'now_cost', 'total_points']]
-slim_main_df.rename(columns={'element_type' : 'position', 'web_name' : 'name', 'now_cost' : 'price'}, inplace = True)
+slimMainDf = mainDF[['id', 'web_name', 'element_type', 'team', 'now_cost', 'total_points']]
+slimMainDf.rename(columns={'element_type' : 'position', 'web_name' : 'name', 'now_cost' : 'price'}, inplace = True)
 
 # Altering certain columns to more readable names
-for i in range(len(slim_main_df['position'])):
-    slim_main_df['position'][i] = fpl.position(slim_main_df['position'][i])
+for i in range(len(slimMainDf['position'])):
+    slimMainDf['position'][i] = fpl.position(slimMainDf['position'][i])
 
-for j in range(len(slim_main_df['team'])):
-    slim_main_df['team'][j] = fpl.find_team(slim_main_df['team'][j], database)
+for j in range(len(slimMainDf['team'])):
+    slimMainDf['team'][j] = fpl.findTeam(slimMainDf['team'][j], database)
 
 # Converting cost to correct value
-slim_main_df['price'] = slim_main_df.loc[:, ('price')]/10.0
+slimMainDf['price'] = slimMainDf.loc[:, ('price')]/10.0
 
 #getting the current gameweek
 gw = pd.DataFrame(database['events'])
 gws = gw[['id', 'finished']]
 for week, ids in gws.iterrows():
     if ids['finished'] != True:
-        current_gw = ids['id']
+        currentGw = ids['id']
         break
 
-player_list, teams = fpl.get_player_list(database)
+playerList, teams = fpl.getPlayerList(database)
 # Initial figure on page (empty)
 
 
 @app.route("/")
 def index():
     plt.close()
-    player_id = 10
-    gw_points, total_points = fpl.player_weekPoints(player_id)
-    x_axis = [x for x in range(1, len(total_points) + 1)]
-    total_points = [0] * len(gw_points)
-    plt.bar(x_axis, total_points)
+    playerId = 10
+    gwPoints, totalPoints = fpl.playerWeekPoints(playerId)
+    x_axis = [x for x in range(1, len(totalPoints) + 1)]
+    totalPoints = [0] * len(gwPoints)
+    plt.bar(x_axis, totalPoints)
     plt.ylabel("Total Points")
     plt.xlabel("Gameweek")
-    print(total_points)
+    print(totalPoints)
     plt.savefig('c:/Users/chira/Documents/Coding/FPL/static/plot.jpg')
-    return render_template("index.html", player_list = player_list, teams = teams)
+    return render_template("index.html", playerList = playerList, teams = teams)
 
 @app.route('/', methods=['POST'])
-def my_form_post():
+def homeGraph():
     #Obtain user's inputted player
-    if not request.form.get['players']:
+    if not request.form.get('players'):
         return redirect('/')
-    player_name = request.form['players']
-    player_id = fpl.find_player_id(database, player_name)
-    gw_points, total_points = fpl.player_weekPoints(player_id)
-    x_axis = range(1, len(total_points))
-    x_axis = [x for x in range(1, len(total_points) + 1)]
-    plt.bar(x_axis, gw_points, width=0.2, label=player_name)
+    playerName = request.form.get('players')
+    playerId = fpl.findPlayerId(database, playerName)
+    gwPoints, totalPoints = fpl.playerWeekPoints(playerId)
+    x_axis = [x for x in range(1, len(totalPoints) + 1)]
+    plt.bar(x_axis, gwPoints, width=0.2, label=playerName)
     plt.ylabel("Total Points")
     plt.xlabel("Gameweek")
     plt.legend()
     if request.form.get("addOn") != None:
-        plt.plot(x_axis, total_points)
+        plt.plot(x_axis, totalPoints, label=playerName)
         plt.legend()
     plt.savefig('c:/Users/chira/Documents/Coding/FPL/static/plot.jpg')    
-    return render_template("index.html", player_list = player_list, teams = teams)
-
-@app.route("/dbase.html")
-def dbase():
-    return render_template("dbase.html", tables = [slim_main_df.to_html(classes='data')], titles=slim_main_df.columns.values)
-
-
+    return render_template("index.html", playerList = playerList, teams = teams)
 
 @app.route("/team", methods=['GET', 'POST'])
 def team():
@@ -97,7 +88,7 @@ def team():
 
 
 
-@app.route("/teamSelect", methods=['POST'])
+@app.route("/teamSelect", methods=['GET','POST'])
 def teamSelect():
     # Checks if an ID has been submitted
     if not request.form.get("teamID"):
@@ -111,7 +102,7 @@ def teamSelect():
     # Obtains the team id from form and then obtains the player's in that selected team
     teamID = request.form.get('teamID')
     teamUrl = 'https://fantasy.premierleague.com/api/entry/' + teamID + '/event/' + \
-        str(current_gw - 1) + '/picks/'
+        str(currentGw - 1) + '/picks/'
     teamData = rq.get(teamUrl)
     teamDatabase = teamData.json()
 
@@ -120,40 +111,43 @@ def teamSelect():
         return redirect("/team")
     teamPlayers = fpl.getTeamPlayers(teamDatabase, database)  
     plt.close()
-    player_id = 10
-    gw_points, total_points = fpl.player_weekPoints(player_id)
-    x_axis = [x for x in range(1, len(total_points) + 1)]
-    total_points = [0] * len(gw_points)
-    plt.bar(x_axis, total_points)
+    playerId = 10
+    gwPoints, totalPoints = fpl.playerWeekPoints(playerId)
+    x_axis = [x for x in range(1, len(totalPoints) + 1)]
+    totalPoints = [0] * len(gwPoints)
+    plt.bar(x_axis, totalPoints)
     plt.ylabel("Total Points")
     plt.xlabel("Gameweek")
     plt.savefig('c:/Users/chira/Documents/Coding/FPL/static/plot.jpg')
-    return render_template("teamgraph.html", player_list = teamPlayers, teamID = teamID)
+    return render_template("teamgraph.html", playerList = teamPlayers, teamID = teamID)
 
 @app.route("/teamSelected", methods=['POST'])
 def teamGraph():
     # Getting the team's players
+    if not request.form.get('players'):
+        return redirect('/teamSelected')
+
     teamID = request.form.get('teamID')
     teamUrl = 'https://fantasy.premierleague.com/api/entry/' + teamID + '/event/' + \
-                 str(current_gw - 1) + '/picks/'
+                 str(currentGw - 1) + '/picks/'
     teamData = rq.get(teamUrl)
     teamDatabase = teamData.json()
     teamPlayers = fpl.getTeamPlayers(teamDatabase, database)  
-    player_name = request.form['players']
-    player_id = fpl.find_player_id(database, player_name)
+    playerName = request.form.get('players')
+    playerId = fpl.findPlayerId(database, playerName)
     # Populate the graph with the player's points
-    gw_points, total_points = fpl.player_weekPoints(player_id)
-    x_axis = range(1, len(total_points))
-    x_axis = [x for x in range(1, len(total_points) + 1)]
-    plt.bar(x_axis, gw_points, width=0.2, label=player_name)
+    gwPoints, totalPoints = fpl.playerWeekPoints(playerId)
+    x_axis = range(1, len(totalPoints))
+    x_axis = [x for x in range(1, len(totalPoints) + 1)]
+    plt.bar(x_axis, gwPoints, width=0.2, label=playerName)
     plt.ylabel("Total Points")
     plt.xlabel("Gameweek")
     plt.legend()
     if request.form.get("addOn") != None:
-        plt.plot(x_axis, total_points)
+        plt.plot(x_axis, totalPoints, label=playerName)
         plt.legend()
     plt.savefig('c:/Users/chira/Documents/Coding/FPL/static/plot.jpg')    
-    return render_template("teamgraph.html", player_list = teamPlayers, teamID = teamID)
+    return render_template("teamgraph.html", playerList = teamPlayers, teamID = teamID)
 
 
 if __name__ == '__main__':

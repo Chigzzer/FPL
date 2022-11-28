@@ -17,7 +17,7 @@
                 <select name="players" size="5" id="player_list">
                     {% for team in teams %}
                         <option class="team_name" disabled> {{ team }} </option>
-                        {% for player in player_list %}
+                        {% for player in playerList %}
                             {% if player[1] == team %}
                                 <option class="options" value="{{ player[0] }}">{{ player[0] }} | {{ player[1] }}</option>
                             {% endif %}
